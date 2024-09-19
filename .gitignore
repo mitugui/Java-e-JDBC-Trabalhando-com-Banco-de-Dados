@@ -1,0 +1,8 @@
+### IntelliJ IDEA ###
+.idea/
+
+### VS Code ###
+.vscode/
+
+### Maven build directory ###
+target/
