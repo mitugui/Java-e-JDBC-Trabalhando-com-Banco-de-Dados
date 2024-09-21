@@ -29,27 +29,8 @@ public class ContaService {
     }
 
     public void abrir(DadosAberturaConta dadosDaConta) {
-        String sql = "INSERT INTO conta (numero, saldo, cliente_nome, cliente_cpf, cliente_email)" +
-                "VALUES (?, ?, ?, ?, ?)";
-
         Connection conn = connection.recuperarConexao();
-
-        try {
-            PreparedStatement preparedStatement =  conn.prepareStatement(sql);
-
-            preparedStatement.setInt(1, dadosDaConta.numero());
-            preparedStatement.setBigDecimal(2, BigDecimal.ZERO);
-            preparedStatement.setString(3, dadosDaConta.dadosCliente().nome());
-            preparedStatement.setString(4, dadosDaConta.dadosCliente().cpf());
-            preparedStatement.setString(5, dadosDaConta.dadosCliente().email());
-
-            preparedStatement.execute();
-
-            preparedStatement.close();
-            conn.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        new ContaDAO(conn).salvar(dadosDaConta);
     }
 
     public void realizarSaque(Integer numeroDaConta, BigDecimal valor) {
