@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ContaDAO {
-    private Connection conn;
+    private final Connection conn;
 
     ContaDAO(Connection connection) {
         this.conn = connection;
@@ -45,7 +45,7 @@ public class ContaDAO {
         PreparedStatement preparedStatement;
         ResultSet resultSet;
 
-        Set<Conta> contas = new HashSet();
+        Set<Conta> contas = new HashSet<>();
 
         String sql = "SELECT * FROM conta";
 
@@ -66,6 +66,7 @@ public class ContaDAO {
 
                 contas.add(new Conta(numero, cliente, saldo));
             }
+
             preparedStatement.close();
             resultSet.close();
             conn.close();
@@ -74,5 +75,43 @@ public class ContaDAO {
         }
 
         return contas;
+    }
+
+    public Conta listarPorNumero(Integer numeroBusca) {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+        Conta conta = null;
+
+        String sql = "SELECT * FROM conta WHERE numero = ?";
+
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, numeroBusca);
+
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Integer numero = resultSet.getInt(1);
+                BigDecimal saldo = resultSet.getBigDecimal(2);
+                String nome = resultSet.getString(3);
+                String cpf = resultSet.getString(4);
+                String email = resultSet.getString(5);
+
+                DadosCadastroCliente dadosCadastroCliente =
+                        new DadosCadastroCliente(nome, cpf, email);
+                Cliente cliente = new Cliente(dadosCadastroCliente);
+
+                conta = new Conta(numero, cliente, saldo);
+            }
+
+            preparedStatement.close();
+            resultSet.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return conta;
     }
 }

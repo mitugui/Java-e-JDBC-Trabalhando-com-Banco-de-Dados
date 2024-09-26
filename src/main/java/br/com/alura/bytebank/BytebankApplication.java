@@ -2,6 +2,7 @@ package br.com.alura.bytebank;
 
 import br.com.alura.bytebank.domain.RegraDeNegocioException;
 import br.com.alura.bytebank.domain.cliente.DadosCadastroCliente;
+import br.com.alura.bytebank.domain.conta.Conta;
 import br.com.alura.bytebank.domain.conta.ContaService;
 import br.com.alura.bytebank.domain.conta.DadosAberturaConta;
 
@@ -14,25 +15,28 @@ public class BytebankApplication {
 
     public static void main(String[] args) {
         var opcao = exibirMenu();
-        while (opcao != 7) {
+        while (opcao != 8) {
             try {
                 switch (opcao) {
                     case 1:
                         listarContas();
                         break;
                     case 2:
-                        abrirConta();
+                        buscarContaPorNumero();
                         break;
                     case 3:
-                        encerrarConta();
+                        abrirConta();
                         break;
                     case 4:
-                        consultarSaldo();
+                        encerrarConta();
                         break;
                     case 5:
-                        realizarSaque();
+                        consultarSaldo();
                         break;
                     case 6:
+                        realizarSaque();
+                        break;
+                    case 7:
                         realizarDeposito();
                         break;
                 }
@@ -51,12 +55,13 @@ public class BytebankApplication {
         System.out.println("""
                 BYTEBANK - ESCOLHA UMA OPÇÃO:
                 1 - Listar contas abertas
-                2 - Abertura de conta
-                3 - Encerramento de conta
-                4 - Consultar saldo de uma conta
-                5 - Realizar saque em uma conta
-                6 - Realizar depósito em uma conta
-                7 - Sair
+                2 - Buscar uma conta
+                3 - Abertura de conta
+                4 - Encerramento de conta
+                5 - Consultar saldo de uma conta
+                6 - Realizar saque em uma conta
+                7 - Realizar depósito em uma conta
+                8 - Sair
                 """);
         return teclado.nextInt();
     }
@@ -68,6 +73,13 @@ public class BytebankApplication {
 
         System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
         teclado.next();
+    }
+
+    private static void buscarContaPorNumero() {
+        System.out.println("Digite o número da conta:");
+        var numeroConta = teclado.nextInt();
+        Conta newConta = service.buscarContaPorNumero(numeroConta);
+        System.out.println(newConta);
     }
 
     private static void abrirConta() {
