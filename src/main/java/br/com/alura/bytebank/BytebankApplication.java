@@ -22,22 +22,22 @@ public class BytebankApplication {
                         listarContas();
                         break;
                     case 2:
-                        buscarContaPorNumero();
-                        break;
-                    case 3:
                         abrirConta();
                         break;
-                    case 4:
+                    case 3:
                         encerrarConta();
                         break;
-                    case 5:
+                    case 4:
                         consultarSaldo();
                         break;
-                    case 6:
+                    case 5:
                         realizarSaque();
                         break;
-                    case 7:
+                    case 6:
                         realizarDeposito();
+                        break;
+                    case 7:
+                        realizarTransferencia();
                         break;
                 }
             } catch (RegraDeNegocioException e) {
@@ -55,12 +55,12 @@ public class BytebankApplication {
         System.out.println("""
                 BYTEBANK - ESCOLHA UMA OPÇÃO:
                 1 - Listar contas abertas
-                2 - Buscar uma conta
-                3 - Abertura de conta
-                4 - Encerramento de conta
-                5 - Consultar saldo de uma conta
-                6 - Realizar saque em uma conta
-                7 - Realizar depósito em uma conta
+                2 - Abertura de conta
+                3 - Encerramento de conta
+                4 - Consultar saldo de uma conta
+                5 - Realizar saque em uma conta
+                6 - Realizar depósito em uma conta
+                7 - Realizar transferencia
                 8 - Sair
                 """);
         return teclado.nextInt();
@@ -73,13 +73,6 @@ public class BytebankApplication {
 
         System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
         teclado.next();
-    }
-
-    private static void buscarContaPorNumero() {
-        System.out.println("Digite o número da conta:");
-        var numeroConta = teclado.nextInt();
-        Conta newConta = service.buscarContaPorNumero(numeroConta);
-        System.out.println(newConta);
     }
 
     private static void abrirConta() {
@@ -146,6 +139,23 @@ public class BytebankApplication {
         service.realizarDeposito(numeroDaConta, valor);
 
         System.out.println("Depósito realizado com sucesso!");
+        System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
+        teclado.next();
+    }
+
+    private static void realizarTransferencia() {
+        System.out.println("Digite o numero da conta de origem");
+        var numeroDaContaOrigem = teclado.nextInt();
+
+        System.out.println("Digite o numero da conta de destino");
+        var numeroDaContaDestino = teclado.nextInt();
+
+        System.out.println("Digite o valor a ser transferido:");
+        var valor = teclado.nextBigDecimal();
+
+        service.realizarTransferencia(numeroDaContaOrigem, numeroDaContaDestino, valor);
+
+        System.out.println("Transferência realizada com sucesso!");
         System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");
         teclado.next();
     }
