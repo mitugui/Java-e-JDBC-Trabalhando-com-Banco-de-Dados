@@ -11,12 +11,6 @@ public class Conta {
     private BigDecimal saldo;
     private Cliente titular;
 
-    public Conta(Integer numero, Cliente titular) {
-        this.numero = numero;
-        this.titular = titular;
-        this.saldo = BigDecimal.ZERO;
-    }
-
     public Conta(Integer numero, Cliente titular, BigDecimal saldo) {
         this.numero = numero;
         this.titular = titular;
@@ -25,14 +19,6 @@ public class Conta {
 
     public boolean possuiSaldo() {
         return this.saldo.compareTo(BigDecimal.ZERO) != 0;
-    }
-
-    public void sacar(BigDecimal valor) {
-        this.saldo = this.saldo.subtract(valor);
-    }
-
-    public void depositar(BigDecimal valor) {
-        this.saldo = this.saldo.add(valor);
     }
 
     @Override
