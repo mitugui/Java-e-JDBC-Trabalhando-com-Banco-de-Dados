@@ -133,4 +133,22 @@ public class ContaDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public void deletar(Integer numero) {
+        PreparedStatement preparedStatement;
+
+        String sql = "DELETE FROM conta WHERE numero = ?";
+
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, numero);
+
+            preparedStatement.execute();
+
+            preparedStatement.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
