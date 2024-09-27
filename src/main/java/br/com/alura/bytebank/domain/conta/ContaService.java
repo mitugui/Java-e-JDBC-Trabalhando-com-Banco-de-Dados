@@ -39,6 +39,10 @@ public class ContaService {
             throw new RegraDeNegocioException("Saldo insuficiente!");
         }
 
+        if (!conta.getEstaAtiva()) {
+            throw new RegraDeNegocioException("Conta não está ativa");
+        }
+
         BigDecimal novoSaldo = conta.getSaldo().subtract(valor);
 
         this.alterar(conta, novoSaldo);
@@ -46,8 +50,13 @@ public class ContaService {
 
     public void realizarDeposito(Integer numeroDaConta, BigDecimal valor) {
         var conta = this.buscarContaPorNumero(numeroDaConta);
+
         if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RegraDeNegocioException("Valor do deposito deve ser superior a zero!");
+        }
+
+        if (!conta.getEstaAtiva()) {
+            throw new RegraDeNegocioException("Conta não está ativa");
         }
 
         BigDecimal novoSaldo = conta.getSaldo().add(valor);
